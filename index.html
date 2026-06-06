@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Movie Knowledge Graph — Ontology-Driven RDF Knowledge Graph</title>
+  <meta name="description" content="An OWL ontology-driven RDF knowledge graph for the movie domain, featuring SPARQL queries, SHACL validation, OWL-RL reasoning, and LLM-grounded question answering." />
+  <meta name="keywords" content="Knowledge Graph, OWL, RDF, SPARQL, SHACL, Ontology, Movie, TMDb, LLM, NL2SPARQL" />
+  <meta name="author" content="Adile Nisa Güngör, Ferhat Baydır, Furkan Çetin" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Background effects -->
+  <div class="bg-grid"></div>
+  <div class="bg-noise"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <!-- ═══════════════════ NAVBAR ═══════════════════ -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-logo">
+      <div class="nav-logo-icon">🎬</div>
+      <span>MovieKG</span>
+    </div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#pipeline">Pipeline</a></li>
+      <li><a href="#ontology">Ontology</a></li>
+      <li><a href="#sparql">SPARQL</a></li>
+      <li><a href="#validation">Validation</a></li>
+      <li><a href="#llm">LLM</a></li>
+      <li><a href="#research">Research</a></li>
+      <li><a href="#data-acquisition">Data</a></li>
+      <li><a href="#team">Team</a></li>
+      <li><a href="https://github.com/nisagungor/movie-knowledge-graph" target="_blank" rel="noopener" class="nav-github">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        GitHub
+      </a></li>
+    </ul>
+    <div class="nav-toggle" id="navToggle" onclick="toggleNav()">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════ HERO ═══════════════════ -->
+  <section class="hero" id="hero">
+    <div class="hero-rings">
+      <div class="hero-ring"></div>
+      <div class="hero-ring"></div>
+      <div class="hero-ring"></div>
+      <div class="hero-ring"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Knowledge Engineering &amp; Ontologies — Term Project
+      </div>
+      <h1 class="hero-title">
+        <span class="gradient-text">Movie Knowledge</span><br />Graph
+      </h1>
+      <p class="hero-description">
+        An ontology-driven RDF knowledge graph for the movie domain — built with OWL, SPARQL, SHACL, and LLM-grounded question answering to deliver reliable, explainable answers.
+      </p>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-value"><span class="counter" data-target="200">0</span>+</div>
+          <div class="hero-stat-label">Movies</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-value"><span class="counter" data-target="1030">0</span>+</div>
+          <div class="hero-stat-label">People</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-value"><span class="counter" data-target="10">0</span></div>
+          <div class="hero-stat-label">SPARQL Queries</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-value"><span class="counter" data-target="5">0</span></div>
+          <div class="hero-stat-label">OWL Classes</div>
+        </div>
+      </div>
+      <div class="hero-actions">
+        <a href="#pipeline" class="btn btn-primary">
+          Explore Pipeline ↓
+        </a>
+        <a href="https://nisagungor.github.io/movie-knowledge-graph/" target="_blank" rel="noopener" class="btn btn-outline">
+          📄 WIDOCO Docs
+        </a>
+      </div>
+      <div class="uni-info">
+        <div class="uni-info-item">
+          <span class="emoji">🏫</span>
+          Manisa Celal Bayar University
+        </div>
+        <div class="uni-info-item">
+          <span class="emoji">🖥️</span>
+          Dept. of Computer Engineering
+        </div>
+        <div class="uni-info-item">
+          <span class="emoji">👩‍🏫</span>
+          Assist. Prof. Dr. Gamze Türkmen
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ PROBLEM & FEATURES ═══════════════════ -->
+  <div class="section-divider"></div>
+  <section class="section" id="features">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-badge">🎯 Problem & Solution</div>
+        <h2 class="section-title">Why a Knowledge Graph?</h2>
+        <p class="section-subtitle">
+          Movie information on the web is unstructured — keyword search fails for relationship-based questions, and LLMs hallucinate. We solve this with a formal ontology grounded in real data.
+        </p>
+      </div>
+
+      <div class="features-grid reveal-stagger">
+        <!-- Feature 1 -->
+        <div class="card">
+          <div class="card-icon indigo">🧠</div>
+          <h3 class="card-title">OWL Ontology</h3>
+          <p class="card-text">Formal modeling of films, people, genres, production companies, and countries with defined classes and properties.</p>
+        </div>
+        <!-- Feature 2 -->
+        <div class="card">
+          <div class="card-icon purple">🔗</div>
+          <h3 class="card-title">Automated Reasoning</h3>
+          <p class="card-text">OWL-RL materializes inverse properties, super-properties, and defined classes — the <code>MultiTalented</code> class is inferred automatically by HermiT.</p>
+        </div>
+        <!-- Feature 3 -->
+        <div class="card">
+          <div class="card-icon cyan">📊</div>
+          <h3 class="card-title">10 SPARQL Queries</h3>
+          <p class="card-text">Basic retrieval, reasoning-dependent, and aggregation queries — each traced to a competency question.</p>
+        </div>
+        <!-- Feature 4 -->
+        <div class="card">
+          <div class="card-icon emerald">✅</div>
+          <h3 class="card-title">SHACL Validation</h3>
+          <p class="card-text">Class, property, cardinality, and value-range constraints enforce data quality across every movie and person.</p>
+        </div>
+        <!-- Feature 5 -->
+        <div class="card">
+          <div class="card-icon amber">🤖</div>
+          <h3 class="card-title">LLM Integration</h3>
+          <p class="card-text">Natural language → SPARQL → grounded answer pipeline. Schema-constrained generation + result grounding eliminates hallucination.</p>
+        </div>
+        <!-- Feature 6 -->
+        <div class="card">
+          <div class="card-icon rose">🌐</div>
+          <h3 class="card-title">TMDb Data</h3>
+          <p class="card-text">200 top-rated movies with 1030+ people sourced from The Movie Database API — real, rich, production-quality data.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ PIPELINE ═══════════════════ -->
+  <div class="section-divider"></div>
+  <section class="section" id="pipeline">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-badge">⚙️ Architecture</div>
+        <h2 class="section-title">Knowledge Engineering Pipeline</h2>
+        <p class="section-subtitle">
+          The full pipeline from data acquisition to LLM-grounded question answering.
+        </p>
+      </div>
+
+      <div class="pipeline reveal">
+        <!-- Step 1 -->
+        <div class="pipeline-step">
+          <div class="pipeline-node step-1">1</div>
+          <div class="pipeline-content">
+            <h4>Data Acquisition</h4>
+            <p>Fetch top-rated movies from TMDb REST API (v3) — titles, years, runtimes, ratings, genres, directors, cast, companies, and countries.</p>
+            <span class="tech-tag">fetch_tmdb.py</span>
+            <span class="tech-tag">TMDb API</span>
+            <span class="tech-tag">JSON</span>
+          </div>
+        </div>
+        <!-- Step 2 -->
+        <div class="pipeline-step">
+          <div class="pipeline-node step-2">2</div>
+          <div class="pipeline-content">
+            <h4>Ontology Design (TBox)</h4>
+            <p>Define OWL classes (Movie, Person, Genre, ProductionCompany, Country), object properties with inverses and super-properties, data properties, and the defined class <code>MultiTalented</code>.</p>
+            <span class="tech-tag">movie_ontology.ttl</span>
+            <span class="tech-tag">Protégé</span>
+            <span class="tech-tag">OWL</span>
+          </div>
+        </div>
+        <!-- Step 3 -->
+        <div class="pipeline-step">
+          <div class="pipeline-node step-3">3</div>
+          <div class="pipeline-content">
+            <h4>Knowledge Graph Construction</h4>
+            <p>Transform JSON data into RDF triples (ABox). Merge with ontology TBox. Materialize inferred triples with OWL-RL reasoner.</p>
+            <span class="tech-tag">build_graph.py</span>
+            <span class="tech-tag">RDFlib</span>
+            <span class="tech-tag">OWL-RL</span>
+          </div>
+        </div>
+        <!-- Step 4 -->
+        <div class="pipeline-step">
+          <div class="pipeline-node step-4">4</div>
+          <div class="pipeline-content">
+            <h4>SPARQL Querying</h4>
+            <p>10 queries across 3 categories — basic retrieval, reasoning-dependent (inverse/super-property), and aggregation (COUNT, AVG, GROUP BY).</p>
+            <span class="tech-tag">queries.py</span>
+            <span class="tech-tag">SPARQL</span>
+          </div>
+        </div>
+        <!-- Step 5 -->
+        <div class="pipeline-step">
+          <div class="pipeline-node step-5">5</div>
+          <div class="pipeline-content">
+            <h4>SHACL Validation</h4>
+            <p>Enforce data quality with shape constraints: cardinality, datatype, value-range, and class constraints on Movie and Person instances.</p>
+            <span class="tech-tag">validate.py</span>
+            <span class="tech-tag">shapes.ttl</span>
+            <span class="tech-tag">pyShACL</span>
+          </div>
+        </div>
+        <!-- Step 6 -->
+        <div class="pipeline-step">
+          <div class="pipeline-node step-6">6</div>
+          <div class="pipeline-content">
+            <h4>LLM-Grounded QA</h4>
+            <p>Natural language → SPARQL (schema-constrained) → execute → grounded natural language answer. Zero hallucination by design.</p>
+            <span class="tech-tag">llm_nl2sparql.py</span>
+            <span class="tech-tag">Gemini API</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ ONTOLOGY ═══════════════════ -->
+  <div class="section-divider"></div>
+  <section class="section" id="ontology">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-badge">🧬 TBox</div>
+        <h2 class="section-title">Ontology Structure</h2>
+        <p class="section-subtitle">
+          OWL classes, object properties (with inverses &amp; super-properties), and data properties that model the movie domain.
+        </p>
+      </div>
+
+      <div class="ontology-grid reveal">
+        <!-- Interactive SVG Diagram -->
+        <div class="ontology-diagram">
+          <svg class="ontology-svg" viewBox="0 0 520 400">
+            <!-- Edges (drawn first so nodes overlay) -->
+            <!-- Movie → Person (directedBy) -->
+            <line x1="220" y1="185" x2="345" y2="75" stroke="#818cf8" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.5"/>
+            <text x="285" y="118" class="edge-label" fill="#818cf8" text-anchor="middle">directedBy</text>
+
+            <!-- Movie → Person (hasActor) -->
+            <line x1="245" y1="175" x2="370" y2="85" stroke="#a78bfa" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.5"/>
+            <text x="330" y="145" class="edge-label" fill="#a78bfa" text-anchor="middle">hasActor</text>
+
+            <!-- Movie → Genre -->
+            <line x1="240" y1="215" x2="340" y2="310" stroke="#22d3ee" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.5"/>
+            <text x="310" y="270" class="edge-label" fill="#22d3ee" text-anchor="middle">hasGenre</text>
+
+            <!-- Movie → Company -->
+            <line x1="180" y1="180" x2="90" y2="105" stroke="#34d399" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.5"/>
+            <text x="115" y="150" class="edge-label" fill="#34d399" text-anchor="middle">producedBy</text>
+
+            <!-- Movie → Country -->
+            <line x1="180" y1="215" x2="90" y2="320" stroke="#fb923c" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.5"/>
+            <text x="115" y="275" class="edge-label" fill="#fb923c" text-anchor="middle">originCountry</text>
+
+            <!-- Person → MultiTalented (subclass arrow) -->
+            <line x1="395" y1="55" x2="445" y2="55" stroke="#fb7185" stroke-width="1.5" opacity="0.4"/>
+            <text x="420" y="45" class="edge-label" fill="#fb7185" text-anchor="middle" font-size="8">subClass</text>
+
+            <!-- Nodes -->
+            <!-- Movie -->
+            <g class="node-group" style="cursor: pointer;">
+              <rect class="node-rect" x="155" y="170" width="100" height="42" rx="12" fill="rgba(99,102,241,0.15)" stroke="#6366f1" stroke-width="2"/>
+              <text x="205" y="196" text-anchor="middle" fill="#a5b4fc" font-size="14" font-weight="700">Movie</text>
+            </g>
+            <!-- Person -->
+            <g class="node-group" style="cursor: pointer;">
+              <rect class="node-rect" x="330" y="50" width="100" height="42" rx="12" fill="rgba(168,85,247,0.15)" stroke="#a855f7" stroke-width="2"/>
+              <text x="380" y="76" text-anchor="middle" fill="#c084fc" font-size="14" font-weight="700">Person</text>
+            </g>
+            <!-- Genre -->
+            <g class="node-group" style="cursor: pointer;">
+              <rect class="node-rect" x="315" y="300" width="95" height="42" rx="12" fill="rgba(6,182,212,0.15)" stroke="#06b6d4" stroke-width="2"/>
+              <text x="362" y="326" text-anchor="middle" fill="#22d3ee" font-size="14" font-weight="700">Genre</text>
+            </g>
+            <!-- ProductionCompany -->
+            <g class="node-group" style="cursor: pointer;">
+              <rect class="node-rect" x="15" y="72" width="145" height="42" rx="12" fill="rgba(16,185,129,0.15)" stroke="#10b981" stroke-width="2"/>
+              <text x="87" y="98" text-anchor="middle" fill="#34d399" font-size="12" font-weight="700">ProductionCo.</text>
+            </g>
+            <!-- Country -->
+            <g class="node-group" style="cursor: pointer;">
+              <rect class="node-rect" x="30" y="300" width="100" height="42" rx="12" fill="rgba(249,115,22,0.15)" stroke="#f97316" stroke-width="2"/>
+              <text x="80" y="326" text-anchor="middle" fill="#fb923c" font-size="14" font-weight="700">Country</text>
+            </g>
+            <!-- MultiTalented -->
+            <g class="node-group" style="cursor: pointer;">
+              <rect class="node-rect" x="435" y="35" width="80" height="42" rx="12" fill="rgba(244,63,94,0.15)" stroke="#f43f5e" stroke-width="2" stroke-dasharray="4 2"/>
+              <text x="475" y="54" text-anchor="middle" fill="#fb7185" font-size="9" font-weight="700">Multi</text>
+              <text x="475" y="67" text-anchor="middle" fill="#fb7185" font-size="9" font-weight="700">Talented</text>
+            </g>
+
+            <!-- Legend -->
+            <text x="15" y="385" fill="#64748b" font-size="10" font-family="JetBrains Mono, monospace">⬡ Dashed border = Defined (inferred) class</text>
+          </svg>
+        </div>
+
+        <!-- Properties List -->
+        <div class="ontology-props">
+          <div class="prop-group">
+            <div class="prop-group-title">🔗 Object Properties</div>
+            <div class="prop-item">
+              <span class="prop-name">directedBy</span>
+              <span class="prop-arrow">Movie → Person</span>
+            </div>
+            <div class="prop-item">
+              <span class="prop-name">hasActor</span>
+              <span class="prop-arrow">Movie → Person</span>
+            </div>
+            <div class="prop-item">
+              <span class="prop-name">hasContributor</span>
+              <span class="prop-arrow">Movie → Person <em style="color:var(--primary-400)">(super-property)</em></span>
+            </div>
+            <div class="prop-item">
+              <span class="prop-name">directorOf</span>
+              <span class="prop-arrow">Person → Movie <em style="color:var(--accent-400)">(inverse)</em></span>
+            </div>
+            <div class="prop-item">
+              <span class="prop-name">actedIn</span>
+              <span class="prop-arrow">Person → Movie <em style="color:var(--accent-400)">(inverse)</em></span>
+            </div>
+            <div class="prop-item">
+              <span class="prop-name">hasGenre</span>
+              <span class="prop-arrow">Movie → Genre</span>
+            </div>
+            <div class="prop-item">
+              <span class="prop-name">producedBy</span>
+              <span class="prop-arrow">Movie → ProductionCo.</span>
+            </div>
+            <div class="prop-item">
+              <span class="prop-name">originCountry</span>
+              <span class="prop-arrow">Movie → Country</span>
+            </div>
+          </div>
+
+          <div class="prop-group">
+            <div class="prop-group-title">📝 Data Properties</div>
+            <div class="prop-item">
+              <span class="prop-name">title</span>
+              <span class="prop-desc">xsd:string</span>
+            </div>
+            <div class="prop-item">
+              <span class="prop-name">releaseYear</span>
+              <span class="prop-desc">xsd:integer</span>
+            </div>
+            <div class="prop-item">
+              <span class="prop-name">runtime</span>
+              <span class="prop-desc">xsd:integer (minutes)</span>
+            </div>
+            <div class="prop-item">
+              <span class="prop-name">rating</span>
+              <span class="prop-desc">xsd:decimal (0–10)</span>
+            </div>
+            <div class="prop-item">
+              <span class="prop-name">personName</span>
+              <span class="prop-desc">xsd:string</span>
+            </div>
+            <div class="prop-item">
+              <span class="prop-name">genreName</span>
+              <span class="prop-desc">xsd:string</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ SPARQL QUERIES ═══════════════════ -->
+  <div class="section-divider"></div>
+  <section class="section" id="sparql">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-badge">🔍 Queries</div>
+        <h2 class="section-title">SPARQL Queries</h2>
+        <p class="section-subtitle">
+          10 queries organized into three categories, each mapped to a competency question.
+        </p>
+      </div>
+
+      <div class="queries-container reveal-stagger">
+
+        <!-- CQ1 -->
+        <div class="query-card" onclick="toggleQuery(this)">
+          <div class="query-header">
+            <div class="query-header-left">
+              <span class="query-tag basic">Basic</span>
+              <span class="query-title">CQ1 — Movies directed by a specific director</span>
+            </div>
+            <span class="query-toggle">▼</span>
+          </div>
+          <div class="query-body">
+            <div class="query-body-inner">
+              <div class="query-cq">❓ Belirli bir yönetmenin yönettiği filmler hangileri?</div>
+              <div class="code-block">
+                <div class="code-header">
+                  <div class="code-dots"><span class="code-dot red"></span><span class="code-dot yellow"></span><span class="code-dot green"></span></div>
+                  <span class="code-filename">SPARQL</span>
+                </div>
+                <pre class="code-body"><span class="keyword">SELECT</span> ?title ?year <span class="keyword">WHERE</span> {
+  ?p mov:personName ?pn .
+  ?m mov:directedBy ?p ;
+     mov:title ?title ;
+     mov:releaseYear ?year .
+  <span class="function">FILTER</span> (<span class="function">STR</span>(?pn) = <span class="string">"Christopher Nolan"</span>)
+} <span class="keyword">ORDER BY</span> ?year</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CQ2 -->
+        <div class="query-card" onclick="toggleQuery(this)">
+          <div class="query-header">
+            <div class="query-header-left">
+              <span class="query-tag basic">Basic</span>
+              <span class="query-title">CQ2 — Release year and runtime of a movie</span>
+            </div>
+            <span class="query-toggle">▼</span>
+          </div>
+          <div class="query-body">
+            <div class="query-body-inner">
+              <div class="query-cq">❓ Belirli bir filmin çıkış yılı ve süresi (dakika) nedir?</div>
+              <div class="code-block">
+                <div class="code-header">
+                  <div class="code-dots"><span class="code-dot red"></span><span class="code-dot yellow"></span><span class="code-dot green"></span></div>
+                  <span class="code-filename">SPARQL</span>
+                </div>
+                <pre class="code-body"><span class="keyword">SELECT</span> ?year ?runtime <span class="keyword">WHERE</span> {
+  ?m mov:title ?t ;
+     mov:releaseYear ?year ;
+     mov:runtime ?runtime .
+  <span class="function">FILTER</span> (<span class="function">STR</span>(?t) = <span class="string">"Inception"</span>)
+}</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CQ3 -->
+        <div class="query-card" onclick="toggleQuery(this)">
+          <div class="query-header">
+            <div class="query-header-left">
+              <span class="query-tag basic">Basic</span>
+              <span class="query-title">CQ3 — Actors in a specific movie</span>
+            </div>
+            <span class="query-toggle">▼</span>
+          </div>
+          <div class="query-body">
+            <div class="query-body-inner">
+              <div class="query-cq">❓ Belirli bir filmde hangi oyuncular rol almış?</div>
+              <div class="code-block">
+                <div class="code-header">
+                  <div class="code-dots"><span class="code-dot red"></span><span class="code-dot yellow"></span><span class="code-dot green"></span></div>
+                  <span class="code-filename">SPARQL</span>
+                </div>
+                <pre class="code-body"><span class="keyword">SELECT</span> ?actor <span class="keyword">WHERE</span> {
+  ?m mov:title ?t ;
+     mov:hasActor ?p .
+  ?p mov:personName ?actor .
+  <span class="function">FILTER</span> (<span class="function">STR</span>(?t) = <span class="string">"Inception"</span>)
+} <span class="keyword">ORDER BY</span> ?actor</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CQ4 — Reasoning -->
+        <div class="query-card" onclick="toggleQuery(this)">
+          <div class="query-header">
+            <div class="query-header-left">
+              <span class="query-tag reasoning">Reasoning</span>
+              <span class="query-title">CQ4 — Movies a person acted in (inverse property)</span>
+            </div>
+            <span class="query-toggle">▼</span>
+          </div>
+          <div class="query-body">
+            <div class="query-body-inner">
+              <div class="query-cq">❓ Belirli bir kişi hangi filmlerde oyunculuk yapmış? (actedIn = hasActor⁻¹ ile çıkarsanır)</div>
+              <div class="code-block">
+                <div class="code-header">
+                  <div class="code-dots"><span class="code-dot red"></span><span class="code-dot yellow"></span><span class="code-dot green"></span></div>
+                  <span class="code-filename">SPARQL — Inverse Property Inference</span>
+                </div>
+                <pre class="code-body"><span class="keyword">SELECT</span> ?title <span class="keyword">WHERE</span> {
+  ?p mov:personName ?pn .
+  ?p mov:actedIn ?m .   <span class="comment"># actedIn = hasActor'ın ters özelliği (çıkarsanır)</span>
+  ?m mov:title ?title .
+  <span class="function">FILTER</span> (<span class="function">STR</span>(?pn) = <span class="string">"Clint Eastwood"</span>)
+} <span class="keyword">ORDER BY</span> ?title</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CQ5 — Reasoning -->
+        <div class="query-card" onclick="toggleQuery(this)">
+          <div class="query-header">
+            <div class="query-header-left">
+              <span class="query-tag reasoning">Reasoning</span>
+              <span class="query-title">CQ5 — All contributors to a movie (super-property)</span>
+            </div>
+            <span class="query-toggle">▼</span>
+          </div>
+          <div class="query-body">
+            <div class="query-body-inner">
+              <div class="query-cq">❓ Belirli bir filme katkı sağlayan herkes kim? (hasContributor üst-özellik)</div>
+              <div class="code-block">
+                <div class="code-header">
+                  <div class="code-dots"><span class="code-dot red"></span><span class="code-dot yellow"></span><span class="code-dot green"></span></div>
+                  <span class="code-filename">SPARQL — Super-property Inference</span>
+                </div>
+                <pre class="code-body"><span class="keyword">SELECT DISTINCT</span> ?name <span class="keyword">WHERE</span> {
+  ?m mov:title ?t ;
+     mov:hasContributor ?p .  <span class="comment"># directedBy + hasActor üst-özelliği</span>
+  ?p mov:personName ?name .
+  <span class="function">FILTER</span> (<span class="function">STR</span>(?t) = <span class="string">"Inception"</span>)
+} <span class="keyword">ORDER BY</span> ?name</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CQ6 — Reasoning -->
+        <div class="query-card" onclick="toggleQuery(this)">
+          <div class="query-header">
+            <div class="query-header-left">
+              <span class="query-tag reasoning">Reasoning</span>
+              <span class="query-title">CQ6 — People who are both director and actor</span>
+            </div>
+            <span class="query-toggle">▼</span>
+          </div>
+          <div class="query-body">
+            <div class="query-body-inner">
+              <div class="query-cq">❓ Hem yönetmen hem oyuncu olan kişiler kimler? (MultiTalented — tanımlı sınıf)</div>
+              <div class="code-block">
+                <div class="code-header">
+                  <div class="code-dots"><span class="code-dot red"></span><span class="code-dot yellow"></span><span class="code-dot green"></span></div>
+                  <span class="code-filename">SPARQL — Defined Class Reasoning</span>
+                </div>
+                <pre class="code-body"><span class="keyword">SELECT DISTINCT</span> ?name <span class="keyword">WHERE</span> {
+  ?p mov:directorOf ?m1 .  <span class="comment"># ters özellik (çıkarsanır)</span>
+  ?p mov:actedIn   ?m2 .  <span class="comment"># ters özellik (çıkarsanır)</span>
+  ?p mov:personName ?name .
+} <span class="keyword">ORDER BY</span> ?name</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CQ7 — Aggregation -->
+        <div class="query-card" onclick="toggleQuery(this)">
+          <div class="query-header">
+            <div class="query-header-left">
+              <span class="query-tag aggregation">Aggregation</span>
+              <span class="query-title">CQ7 — Movie count per genre</span>
+            </div>
+            <span class="query-toggle">▼</span>
+          </div>
+          <div class="query-body">
+            <div class="query-body-inner">
+              <div class="query-cq">❓ Her türde (genre) kaç film var?</div>
+              <div class="code-block">
+                <div class="code-header">
+                  <div class="code-dots"><span class="code-dot red"></span><span class="code-dot yellow"></span><span class="code-dot green"></span></div>
+                  <span class="code-filename">SPARQL — COUNT + GROUP BY</span>
+                </div>
+                <pre class="code-body"><span class="keyword">SELECT</span> ?genre (<span class="function">COUNT</span>(?m) <span class="keyword">AS</span> ?n) <span class="keyword">WHERE</span> {
+  ?m mov:hasGenre ?g .
+  ?g mov:genreName ?genre .
+} <span class="keyword">GROUP BY</span> ?genre <span class="keyword">ORDER BY DESC</span>(?n)</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CQ8 — Aggregation -->
+        <div class="query-card" onclick="toggleQuery(this)">
+          <div class="query-header">
+            <div class="query-header-left">
+              <span class="query-tag aggregation">Aggregation</span>
+              <span class="query-title">CQ8 — Most prolific director</span>
+            </div>
+            <span class="query-toggle">▼</span>
+          </div>
+          <div class="query-body">
+            <div class="query-body-inner">
+              <div class="query-cq">❓ En çok film yönetmiş yönetmen kim?</div>
+              <div class="code-block">
+                <div class="code-header">
+                  <div class="code-dots"><span class="code-dot red"></span><span class="code-dot yellow"></span><span class="code-dot green"></span></div>
+                  <span class="code-filename">SPARQL — COUNT + LIMIT</span>
+                </div>
+                <pre class="code-body"><span class="keyword">SELECT</span> ?director (<span class="function">COUNT</span>(?m) <span class="keyword">AS</span> ?n) <span class="keyword">WHERE</span> {
+  ?m mov:directedBy ?p .
+  ?p mov:personName ?director .
+} <span class="keyword">GROUP BY</span> ?director <span class="keyword">ORDER BY DESC</span>(?n) <span class="keyword">LIMIT</span> <span class="variable">1</span></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CQ9 — Aggregation -->
+        <div class="query-card" onclick="toggleQuery(this)">
+          <div class="query-header">
+            <div class="query-header-left">
+              <span class="query-tag aggregation">Aggregation</span>
+              <span class="query-title">CQ9 — Average rating per genre</span>
+            </div>
+            <span class="query-toggle">▼</span>
+          </div>
+          <div class="query-body">
+            <div class="query-body-inner">
+              <div class="query-cq">❓ Tür bazında ortalama film puanı nedir?</div>
+              <div class="code-block">
+                <div class="code-header">
+                  <div class="code-dots"><span class="code-dot red"></span><span class="code-dot yellow"></span><span class="code-dot green"></span></div>
+                  <span class="code-filename">SPARQL — AVG + GROUP BY</span>
+                </div>
+                <pre class="code-body"><span class="keyword">SELECT</span> ?genre (<span class="function">ROUND</span>(<span class="function">AVG</span>(?r)*<span class="variable">10</span>)/<span class="variable">10</span> <span class="keyword">AS</span> ?avgRating) <span class="keyword">WHERE</span> {
+  ?m mov:hasGenre ?g ;
+     mov:rating ?r .
+  ?g mov:genreName ?genre .
+} <span class="keyword">GROUP BY</span> ?genre <span class="keyword">ORDER BY DESC</span>(?avgRating)</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CQ10 — Basic+Filter -->
+        <div class="query-card" onclick="toggleQuery(this)">
+          <div class="query-header">
+            <div class="query-header-left">
+              <span class="query-tag basic">Basic</span>
+              <span class="query-title">CQ10 — Post-2010 Science Fiction movies</span>
+            </div>
+            <span class="query-toggle">▼</span>
+          </div>
+          <div class="query-body">
+            <div class="query-body-inner">
+              <div class="query-cq">❓ 2010 sonrası çıkmış bilim-kurgu filmleri hangileri?</div>
+              <div class="code-block">
+                <div class="code-header">
+                  <div class="code-dots"><span class="code-dot red"></span><span class="code-dot yellow"></span><span class="code-dot green"></span></div>
+                  <span class="code-filename">SPARQL — FILTER with compound condition</span>
+                </div>
+                <pre class="code-body"><span class="keyword">SELECT</span> ?title ?year <span class="keyword">WHERE</span> {
+  ?m mov:hasGenre ?g ;
+     mov:title ?title ;
+     mov:releaseYear ?year .
+  ?g mov:genreName ?gn .
+  <span class="function">FILTER</span> (<span class="function">STR</span>(?gn) = <span class="string">"Science Fiction"</span> &amp;&amp; ?year > <span class="variable">2010</span>)
+} <span class="keyword">ORDER BY</span> ?year</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ VALIDATION ═══════════════════ -->
+  <div class="section-divider"></div>
+  <section class="section" id="validation">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-badge">🛡️ Quality</div>
+        <h2 class="section-title">SHACL Validation</h2>
+        <p class="section-subtitle">
+          Shape constraints ensure data quality — every Movie and Person instance is validated against strict rules.
+        </p>
+      </div>
+
+      <!-- Shapes Code -->
+      <div class="code-block reveal" style="max-width:800px; margin: 0 auto 40px;">
+        <div class="code-header">
+          <div class="code-dots"><span class="code-dot red"></span><span class="code-dot yellow"></span><span class="code-dot green"></span></div>
+          <span class="code-filename">shapes.ttl</span>
+        </div>
+        <pre class="code-body"><span class="prefix">@prefix</span> <span class="type">sh:</span>   <span class="uri">&lt;http://www.w3.org/ns/shacl#&gt;</span> .
+<span class="prefix">@prefix</span> <span class="type">mov:</span>  <span class="uri">&lt;http://example.org/movie#&gt;</span> .
+
+<span class="type">mov:MovieShape</span> a <span class="type">sh:NodeShape</span> ;
+    sh:targetClass <span class="type">mov:Movie</span> ;
+    sh:property [ sh:path mov:title ;
+                  sh:datatype xsd:string ;
+                  sh:minCount <span class="variable">1</span> ; sh:maxCount <span class="variable">1</span> ] ;
+    sh:property [ sh:path mov:releaseYear ;
+                  sh:minInclusive <span class="variable">1888</span> ;
+                  sh:maxInclusive <span class="variable">2030</span> ] ;
+    sh:property [ sh:path mov:rating ;
+                  sh:minInclusive <span class="variable">0</span> ;
+                  sh:maxInclusive <span class="variable">10</span> ] ;
+    sh:property [ sh:path mov:directedBy ;
+                  sh:minCount <span class="variable">1</span> ;
+                  sh:class <span class="type">mov:Person</span> ] ;
+    sh:property [ sh:path mov:hasGenre ;
+                  sh:minCount <span class="variable">1</span> ;
+                  sh:class <span class="type">mov:Genre</span> ] .</pre>
+      </div>
+
+      <div class="validation-demo reveal-stagger">
+        <!-- Clean run -->
+        <div class="validation-card success">
+          <div class="validation-status pass">✅ Conforms: True</div>
+          <p style="color:var(--text-secondary); margin-bottom: 16px; font-size:0.9rem;">
+            <code>python validate.py</code> — Clean data passes all constraints
+          </p>
+          <ul class="validation-list">
+            <li><span class="icon">✓</span> Every movie has exactly 1 title (string)</li>
+            <li><span class="icon">✓</span> Release years in 1888–2030 range</li>
+            <li><span class="icon">✓</span> Ratings within 0–10 range</li>
+            <li><span class="icon">✓</span> Every movie has ≥1 director (Person)</li>
+            <li><span class="icon">✓</span> Every movie has ≥1 genre (Genre)</li>
+            <li><span class="icon">✓</span> Every person has exactly 1 name</li>
+          </ul>
+        </div>
+        <!-- Demo run -->
+        <div class="validation-card error">
+          <div class="validation-status fail">❌ Conforms: False</div>
+          <p style="color:var(--text-secondary); margin-bottom: 16px; font-size:0.9rem;">
+            <code>python validate.py --demo</code> — Injected errors caught
+          </p>
+          <ul class="validation-list">
+            <li><span class="icon" style="color:var(--rose-400)">✗</span> <strong>"Bozuk Film"</strong> — rating 99 → value-range violation (0–10)</li>
+            <li><span class="icon" style="color:var(--rose-400)">✗</span> <strong>"Bozuk Film"</strong> — no director → cardinality violation (min 1)</li>
+            <li><span class="icon" style="color:var(--rose-400)">✗</span> <strong>person_GHOST</strong> — no name → cardinality violation (min 1)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ LLM INTEGRATION ═══════════════════ -->
+  <div class="section-divider"></div>
+  <section class="section" id="llm">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-badge">🤖 AI-Powered</div>
+        <h2 class="section-title">LLM-Grounded QA</h2>
+        <p class="section-subtitle">
+          Natural language questions are translated to SPARQL by an LLM, grounded in the knowledge graph to eliminate hallucination.
+        </p>
+      </div>
+
+      <div class="llm-pipeline reveal">
+        <!-- Flow steps -->
+        <div class="llm-flow">
+          <div class="llm-step">
+            <div class="llm-step-num">1</div>
+            <div>
+              <h4>User asks a question</h4>
+              <p>"Christopher Nolan hangi filmleri yönetti?"</p>
+            </div>
+          </div>
+          <div class="llm-step">
+            <div class="llm-step-num">2</div>
+            <div>
+              <h4>Schema-constrained SPARQL generation</h4>
+              <p>LLM receives the full ontology schema (classes + properties) and generates ONLY a SPARQL query — no fabricated data.</p>
+            </div>
+          </div>
+          <div class="llm-step">
+            <div class="llm-step-num">3</div>
+            <div>
+              <h4>Query execution on KG</h4>
+              <p>Generated SPARQL runs against <code>movies_inferred.ttl</code> using RDFlib. Results are real graph data.</p>
+            </div>
+          </div>
+          <div class="llm-step">
+            <div class="llm-step-num">4</div>
+            <div>
+              <h4>Grounded answer generation</h4>
+              <p>LLM receives ONLY the query results and produces a natural language answer. Empty results → "Veri bulunamadı." — zero hallucination.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Demo -->
+        <div class="llm-demo">
+          <div class="llm-demo-header">
+            🎬 Live Demo Simulation
+          </div>
+          <div class="llm-demo-body">
+            <div class="llm-demo-q">
+              💬 "Christopher Nolan hangi filmleri yönetti?"
+            </div>
+            <div class="code-block" style="margin: 16px 0;">
+              <div class="code-header">
+                <div class="code-dots"><span class="code-dot red"></span><span class="code-dot yellow"></span><span class="code-dot green"></span></div>
+                <span class="code-filename">Generated SPARQL</span>
+              </div>
+              <pre class="code-body" style="font-size:0.78rem;"><span class="keyword">SELECT</span> ?title <span class="keyword">WHERE</span> {
+  ?p mov:personName ?pn .
+  ?m mov:directedBy ?p ;
+     mov:title ?title .
+  <span class="function">FILTER</span>(<span class="function">STR</span>(?pn) = <span class="string">"Christopher Nolan"</span>)
+}</pre>
+            </div>
+            <div class="llm-demo-arrow">⬇️ Query Results ⬇️</div>
+            <div class="llm-demo-a">
+              Christopher Nolan'ın yönettiği filmler: <strong>Inception</strong> (2010), <strong>The Dark Knight</strong> (2008), <strong>Interstellar</strong> (2014), <strong>The Dark Knight Rises</strong> (2012), <strong>Memento</strong> (2000), <strong>The Prestige</strong> (2006)...
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Anti-hallucination strategies -->
+      <div class="features-grid reveal-stagger" style="margin-top: 48px; grid-template-columns: repeat(3, 1fr);">
+        <div class="card">
+          <div class="card-icon indigo">🔒</div>
+          <h3 class="card-title">Schema Constraint</h3>
+          <p class="card-text">LLM receives exact class &amp; property names — can only use what exists in the ontology.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon emerald">📌</div>
+          <h3 class="card-title">Result Grounding</h3>
+          <p class="card-text">Final answer is generated ONLY from SPARQL result rows — no external knowledge injected.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon rose">🚫</div>
+          <h3 class="card-title">Empty = Honest</h3>
+          <p class="card-text">If the query returns no results, the system says "Veri bulunamadı" instead of making up an answer.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ RESEARCH INTEGRATION (Phase 2) ═══════════════════ -->
+  <div class="section-divider"></div>
+  <section class="section" id="research">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-badge">📚 Phase 2 — Research</div>
+        <h2 class="section-title">Research Integration</h2>
+        <p class="section-subtitle">
+          Integrating state-of-the-art research into our knowledge engineering pipeline — grounded in ontology-based QA and neurosymbolic approaches.
+        </p>
+      </div>
+
+      <div class="ontology-grid reveal">
+        <!-- Selected Research -->
+        <div style="display:flex; flex-direction:column; gap:24px;">
+          <div class="card" style="border-color: rgba(99,102,241,0.3);">
+            <div class="card-icon indigo">📄</div>
+            <h3 class="card-title">Selected Study: OntoSage</h3>
+            <p class="card-text" style="margin-bottom:16px;">Ontology-based QA systems that integrate formal ontologies with LLM reasoning for accurate, grounded question answering.</p>
+            <div style="margin-bottom:12px;">
+              <strong style="color:var(--primary-400); font-size:0.85rem;">Why we selected this study:</strong>
+              <p class="card-text">OntoSage directly aligns with our project's core objective — combining a formal OWL ontology with LLM capabilities. It validates our architectural approach of schema-constrained SPARQL generation and result grounding to eliminate hallucination.</p>
+            </div>
+            <div style="margin-bottom:12px;">
+              <strong style="color:var(--cyan-400); font-size:0.85rem;">Relevance to our project:</strong>
+              <p class="card-text">Our NL→SPARQL→Grounded Answer pipeline implements similar principles — the LLM is constrained to the ontology schema and answers are grounded in real knowledge graph results.</p>
+            </div>
+            <div>
+              <strong style="color:var(--emerald-400); font-size:0.85rem;">Integration points:</strong>
+              <p class="card-text">Applied in the LLM integration layer (<code>llm_nl2sparql.py</code>) — schema-constrained generation, SPARQL execution on the KG, and result-grounded answer synthesis.</p>
+            </div>
+          </div>
+
+          <div class="card" style="border-color: rgba(168,85,247,0.3);">
+            <div class="card-icon purple">🧠</div>
+            <h3 class="card-title">Also Considered</h3>
+            <ul style="list-style:none; display:flex; flex-direction:column; gap:10px; margin-top:8px;">
+              <li class="card-text">🔬 <strong style="color:var(--text-primary)">Neurosymbolic Learning with OWL</strong> — Combining neural networks with OWL reasoning for hybrid AI systems</li>
+              <li class="card-text">📊 <strong style="color:var(--text-primary)">Ontology-Driven Real-Time Analytics</strong> — Using ontologies to structure and query streaming data</li>
+              <li class="card-text">🤖 <strong style="color:var(--text-primary)">Ontology Population using LLMs</strong> — Automated ABox generation from unstructured text using language models</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Mandatory Paper Review -->
+        <div style="display:flex; flex-direction:column; gap:24px;">
+          <div class="card" style="border-color: rgba(249,115,22,0.3);">
+            <div class="card-icon amber">📋</div>
+            <h3 class="card-title">Mandatory Paper Review</h3>
+            <p style="color:var(--accent-400); font-size:0.82rem; font-weight:600; margin-bottom:16px; font-style:italic;">"Personalized Ontology and Deep Training Tree-Based Optimal GRU-RNN for Prediction of Students' Behavior"</p>
+            
+            <div style="margin-bottom:16px;">
+              <strong style="color:var(--primary-400); font-size:0.85rem;">Core Methodology:</strong>
+              <p class="card-text">The study proposes a hybrid system combining personalized ontologies with deep learning (GRU-RNN with decision tree optimization) for student behavior prediction. The ontology captures student attributes, academic performance, and behavioral patterns as formal concepts, while the GRU-RNN handles temporal prediction over sequential data.</p>
+            </div>
+            
+            <div style="margin-bottom:16px;">
+              <strong style="color:var(--cyan-400); font-size:0.85rem;">Key Contributions:</strong>
+              <ul style="list-style:none; display:flex; flex-direction:column; gap:6px; margin-top:6px;">
+                <li class="card-text">✦ Personalized ontology construction per student profile</li>
+                <li class="card-text">✦ Tree-based optimization for GRU-RNN hyperparameters</li>
+                <li class="card-text">✦ Integration of symbolic (ontology) and sub-symbolic (neural) representations</li>
+                <li class="card-text">✦ Improved prediction accuracy through ontology-guided feature selection</li>
+              </ul>
+            </div>
+            
+            <div>
+              <strong style="color:var(--emerald-400); font-size:0.85rem;">Adaptation to Our Project:</strong>
+              <p class="card-text">While our domain differs (movies vs. education), the core idea of using ontologies to structure features for downstream ML is transferable. Our ontology could similarly guide feature extraction — e.g., ontology-driven feature vectors for movie recommendation or trend prediction. The neurosymbolic approach parallels our LLM + KG integration.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ DATA ACQUISITION & ONTOLOGY EXPANSION (Phase 2) ═══════════════════ -->
+  <div class="section-divider"></div>
+  <section class="section" id="data-acquisition">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-badge">📦 Phase 2 — Data & Ontology</div>
+        <h2 class="section-title">Data Acquisition &amp; Ontology Expansion</h2>
+        <p class="section-subtitle">
+          Complete data pipeline from TMDb API to RDF triples, and the methodology behind our ontology design and expansion.
+        </p>
+      </div>
+
+      <div class="ontology-grid reveal">
+        <!-- Data Acquisition -->
+        <div style="display:flex; flex-direction:column; gap:24px;">
+          <div class="prop-group">
+            <div class="prop-group-title">🌐 Data Sources</div>
+            <div class="prop-item">
+              <span class="prop-name" style="min-width:100px;">API</span>
+              <span class="prop-desc">TMDb REST API v3 — public, free developer key</span>
+            </div>
+            <div class="prop-item">
+              <span class="prop-name" style="min-width:100px;">Endpoint</span>
+              <span class="prop-desc">/movie/top_rated (paginated, 10 pages × 20 films)</span>
+            </div>
+            <div class="prop-item">
+              <span class="prop-name" style="min-width:100px;">Fields</span>
+              <span class="prop-desc">title, year, runtime, rating, genres, directors, cast, companies, countries</span>
+            </div>
+            <div class="prop-item">
+              <span class="prop-name" style="min-width:100px;">Volume</span>
+              <span class="prop-desc">200 movies, 1030+ distinct people, 19 genres</span>
+            </div>
+          </div>
+
+          <div class="prop-group">
+            <div class="prop-group-title">⚙️ Collection Methodology</div>
+            <div class="prop-item">
+              <span class="prop-name" style="min-width:100px;">Step 1</span>
+              <span class="prop-desc">Fetch top_rated list pages (10 pages)</span>
+            </div>
+            <div class="prop-item">
+              <span class="prop-name" style="min-width:100px;">Step 2</span>
+              <span class="prop-desc">For each movie: GET details + credits (cast & crew)</span>
+            </div>
+            <div class="prop-item">
+              <span class="prop-name" style="min-width:100px;">Step 3</span>
+              <span class="prop-desc">Extract director (job="Director"), top-5 actors (by billing order)</span>
+            </div>
+            <div class="prop-item">
+              <span class="prop-name" style="min-width:100px;">Step 4</span>
+              <span class="prop-desc">Save structured JSON → <code>movies.json</code></span>
+            </div>
+          </div>
+
+          <div class="prop-group">
+            <div class="prop-group-title">🔄 Data → Ontology Mapping</div>
+            <div class="prop-item">
+              <span class="prop-name" style="min-width:100px;">JSON object</span>
+              <span class="prop-desc">→ <code>mov:Movie</code> instance (URI: mov:movie_{id})</span>
+            </div>
+            <div class="prop-item">
+              <span class="prop-name" style="min-width:100px;">directors[]</span>
+              <span class="prop-desc">→ <code>mov:Person</code> + <code>mov:directedBy</code></span>
+            </div>
+            <div class="prop-item">
+              <span class="prop-name" style="min-width:100px;">actors[]</span>
+              <span class="prop-desc">→ <code>mov:Person</code> + <code>mov:hasActor</code></span>
+            </div>
+            <div class="prop-item">
+              <span class="prop-name" style="min-width:100px;">genres[]</span>
+              <span class="prop-desc">→ <code>mov:Genre</code> + <code>mov:hasGenre</code></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ontology Expansion -->
+        <div style="display:flex; flex-direction:column; gap:24px;">
+          <div class="card" style="border-color: rgba(6,182,212,0.3);">
+            <div class="card-icon cyan">🏗️</div>
+            <h3 class="card-title">Ontology Design Methodology</h3>
+            <p class="card-text" style="margin-bottom:12px;">Our ontology was designed from scratch using a structured approach, without extending an existing external ontology.</p>
+            <div style="margin-bottom:12px;">
+              <strong style="color:var(--primary-400); font-size:0.85rem;">Methodology: METHONTOLOGY</strong>
+              <ul style="list-style:none; display:flex; flex-direction:column; gap:6px; margin-top:6px;">
+                <li class="card-text">📌 <strong>Specification</strong> — Domain: movie industry, Purpose: structured QA over film data</li>
+                <li class="card-text">📌 <strong>Conceptualization</strong> — Identified core concepts (Movie, Person, Genre, etc.) and relationships</li>
+                <li class="card-text">📌 <strong>Formalization</strong> — Expressed in OWL with Protégé, including defined classes and inverse properties</li>
+                <li class="card-text">📌 <strong>Implementation</strong> — Turtle format, automated reasoning with HermiT/OWL-RL</li>
+                <li class="card-text">📌 <strong>Evaluation</strong> — Validated via competency questions (CQ1-CQ10) and SHACL constraints</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card" style="border-color: rgba(16,185,129,0.3);">
+            <div class="card-icon emerald">📐</div>
+            <h3 class="card-title">Design Patterns Used</h3>
+            <ul style="list-style:none; display:flex; flex-direction:column; gap:10px; margin-top:8px;">
+              <li class="card-text">🔗 <strong style="color:var(--text-primary)">Roles as Properties (not Types)</strong> — Director/Actor modeled via properties, not separate classes. Enables a person to be both without type conflict.</li>
+              <li class="card-text">🔄 <strong style="color:var(--text-primary)">Inverse Properties</strong> — <code>directorOf</code> ↔ <code>directedBy</code>, <code>actedIn</code> ↔ <code>hasActor</code> — enabling bidirectional traversal via reasoning.</li>
+              <li class="card-text">⬆️ <strong style="color:var(--text-primary)">Super-property Abstraction</strong> — <code>hasContributor</code> subsumes both <code>directedBy</code> and <code>hasActor</code> for unified contributor queries.</li>
+              <li class="card-text">🧠 <strong style="color:var(--text-primary)">Defined Class (MultiTalented)</strong> — Inferred automatically by OWL reasoner for people who are both directors and actors.</li>
+            </ul>
+          </div>
+
+          <div class="card" style="border-color: rgba(244,63,94,0.3);">
+            <div class="card-icon rose">📖</div>
+            <h3 class="card-title">WIDOCO Documentation</h3>
+            <p class="card-text" style="margin-bottom:12px;">Comprehensive ontology documentation generated with WIDOCO, published via GitHub Pages.</p>
+            <ul style="list-style:none; display:flex; flex-direction:column; gap:6px;">
+              <li class="card-text">✓ All classes, properties, and relationships documented</li>
+              <li class="card-text">✓ WebVOWL visualization included</li>
+              <li class="card-text">✓ Namespace, metadata, and versioning information</li>
+              <li class="card-text">✓ Reflects the latest extended version (v2)</li>
+            </ul>
+            <a href="https://nisagungor.github.io/movie-knowledge-graph/" target="_blank" rel="noopener" class="btn btn-outline" style="margin-top:16px; display:inline-flex;">📄 View WIDOCO Docs →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ TECH STACK ═══════════════════ -->
+  <div class="section-divider"></div>
+  <section class="section" id="tech">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-badge">🛠️ Stack</div>
+        <h2 class="section-title">Technology Stack</h2>
+        <p class="section-subtitle">
+          Tools and libraries powering the knowledge engineering pipeline.
+        </p>
+      </div>
+
+      <div class="tech-grid reveal-stagger">
+        <div class="tech-item">
+          <div class="tech-item-icon">🦉</div>
+          <div class="tech-item-name">Protégé</div>
+          <div class="tech-item-desc">Ontology editor + HermiT</div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-item-icon">🐍</div>
+          <div class="tech-item-name">Python 3</div>
+          <div class="tech-item-desc">Core language</div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-item-icon">📊</div>
+          <div class="tech-item-name">RDFlib</div>
+          <div class="tech-item-desc">RDF graph management</div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-item-icon">🔗</div>
+          <div class="tech-item-name">OWL-RL</div>
+          <div class="tech-item-desc">Deductive closure</div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-item-icon">🛡️</div>
+          <div class="tech-item-name">pyShACL</div>
+          <div class="tech-item-desc">Shapes validation</div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-item-icon">✨</div>
+          <div class="tech-item-name">Gemini API</div>
+          <div class="tech-item-desc">NL → SPARQL</div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-item-icon">🎬</div>
+          <div class="tech-item-name">TMDb API</div>
+          <div class="tech-item-desc">Movie data source</div>
+        </div>
+        <div class="tech-item">
+          <div class="tech-item-icon">📖</div>
+          <div class="tech-item-name">WIDOCO</div>
+          <div class="tech-item-desc">Ontology documentation</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ REPO STRUCTURE ═══════════════════ -->
+  <div class="section-divider"></div>
+  <section class="section" id="structure">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-badge">📁 Repository</div>
+        <h2 class="section-title">Project Structure</h2>
+        <p class="section-subtitle">
+          Well-organized repository with clear separation of ontology, data, scripts, and documentation.
+        </p>
+      </div>
+
+      <div class="code-block reveal" style="max-width: 700px; margin: 0 auto;">
+        <div class="code-header">
+          <div class="code-dots"><span class="code-dot red"></span><span class="code-dot yellow"></span><span class="code-dot green"></span></div>
+          <span class="code-filename">movie-knowledge-graph/</span>
+        </div>
+        <pre class="code-body"><span class="type">movie-knowledge-graph/</span>
+├── <span class="variable">movie_ontology.ttl</span>       <span class="comment"># OWL ontology (TBox) with metadata</span>
+├── <span class="string">movies.ttl</span>               <span class="comment"># RDF knowledge graph (asserted)</span>
+├── <span class="string">movies_inferred.ttl</span>      <span class="comment"># RDF graph after OWL-RL reasoning</span>
+├── <span class="keyword">shapes.ttl</span>               <span class="comment"># SHACL validation shapes</span>
+├── <span class="function">fetch_tmdb.py</span>            <span class="comment"># Data acquisition from TMDb API</span>
+├── <span class="function">build_graph.py</span>           <span class="comment"># JSON → RDF + reasoning</span>
+├── <span class="function">queries.py</span>               <span class="comment"># 10 SPARQL queries</span>
+├── <span class="function">validate.py</span>              <span class="comment"># SHACL validation runner</span>
+├── <span class="function">llm_nl2sparql.py</span>         <span class="comment"># LLM (Gemini) NL-to-SPARQL pipeline</span>
+├── <span class="string">sample_movies.json</span>       <span class="comment"># Small offline sample dataset</span>
+├── <span class="type">competency_questions.md</span>  <span class="comment"># The competency questions</span>
+├── <span class="type">requirements.txt</span>         <span class="comment"># Python dependencies</span>
+├── <span class="type">docs/</span>                    <span class="comment"># WIDOCO ontology documentation (HTML)</span>
+└── <span class="type">report/</span>                  <span class="comment"># Project report (PDF/DOCX)</span></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ TEAM ═══════════════════ -->
+  <div class="section-divider"></div>
+  <section class="section" id="team">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-badge">👥 Team</div>
+        <h2 class="section-title">Team Members</h2>
+        <p class="section-subtitle">
+          Manisa Celal Bayar University — Department of Computer Engineering
+        </p>
+      </div>
+
+      <div class="team-grid reveal-stagger">
+        <div class="team-card">
+          <img src="profil_photos/nisa.png" alt="Adile Nisa Güngör" class="team-photo" />
+          <h3 class="team-name">Adile Nisa Güngör</h3>
+          <p class="team-id">220316073</p>
+        </div>
+        <div class="team-card">
+          <img src="profil_photos/ferhat.jpeg" alt="Ferhat Baydır" class="team-photo" />
+          <h3 class="team-name">Ferhat Baydır</h3>
+          <p class="team-id">220316040</p>
+        </div>
+        <div class="team-card">
+          <img src="profil_photos/furkan.png" alt="Furkan Çetin" class="team-photo" />
+          <h3 class="team-name">Furkan Çetin</h3>
+          <p class="team-id">220316022</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ FOOTER ═══════════════════ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <p class="footer-text">
+          © 2026 Movie Knowledge Graph — Knowledge Engineering &amp; Ontologies Term Project
+        </p>
+        <div class="footer-links">
+          <a href="https://github.com/nisagungor/movie-knowledge-graph" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://nisagungor.github.io/movie-knowledge-graph/" target="_blank" rel="noopener">WIDOCO Docs</a>
+          <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scroll to top -->
+  <button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+  <script src="script.js"></script>
+</body>
+</html>
